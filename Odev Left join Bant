@@ -1,0 +1,43 @@
+//ilk soru cevabı
+select distinct Product.UnitPrice,Customer.Country from Product
+left join OrderItem on OrderItem.ProductId = Product.Id
+left join 'Order' on 'Order'.Id = OrderItem.OrderId
+left join Customer on Customer.Id = 'Order'.CustomerId
+order by Product.UnitPrice desc limit (select (count(Product.UnitPrice) * 10 / 100) from Product)
+
+
+select UnitPrice from Product order by Product.UnitPrice desc limit (select (count(Product.UnitPrice) * 10 / 100) from Product)
+//--------------
+
+//ikinci soru cevabı
+
+select Product.UnitPrice,Supplier.Country from Product
+left join Supplier on Supplier.Id = Product.SupplierId
+order by Product.UnitPrice limit (select (count(Product.UnitPrice) * 20 / 100) from Product)
+
+//----------
+
+//Üçüncü soru cevabı
+
+select distinct Product.ProductName , Customer.Country from 'Order'
+left join Customer on Customer.Id = 'Order'.CustomerId
+left join OrderItem on OrderItem.OrderId = 'Order'.Id
+left join Product on Product.Id = OrderItem.ProductId
+where Customer.Country in ("USA","Canada","Argentina","Brazil","Mexico","Venezuela");
+
+//----------
+
+//Dördüncü soru cevabı
+
+select OrderItem.UnitPrice,Product.ProductName from OrderItem 
+left join Product on Product.Id = OrderItem.ProductId
+group by OrderItem.ProductId order by (OrderItem.UnitPrice*OrderItem.Quantity) desc limit 20
+
+//---------
+
+//Beşinci soru cevabı
+
+select * from Product order by UnitPrice limit (select count(
+select avg(UnitPrice) + (sum(UnitPrice)*1/10) from Product
+
+//------

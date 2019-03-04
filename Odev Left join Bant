@@ -37,7 +37,16 @@ group by OrderItem.ProductId order by (OrderItem.UnitPrice*OrderItem.Quantity) d
 
 //Beşinci soru cevabı
 
-select * from Product order by UnitPrice limit (select count(
-select avg(UnitPrice) + (sum(UnitPrice)*1/10) from Product
+select Customer.Country as CustomerCountry , Supplier.Country as SupplierCountry , Product.UnitPrice as ProductUnitPrice from Product 
+left join Supplier on Supplier.Id = Product.SupplierId
+left join OrderItem on OrderItem.ProductId = Product.Id
+left join 'Order' on 'Order'.Id = OrderItem.OrderId
+left join Customer on Customer.Id = 'Order'.CustomerId
+where Product.UnitPrice > (select avg(UnitPrice) - (avg(UnitPrice)*1/10) from Product) and 
+Product.UnitPrice < (select avg(UnitPrice) + (avg(UnitPrice)*1/10) from Product)
+order by Product.UnitPrice
+
+
+
 
 //------
